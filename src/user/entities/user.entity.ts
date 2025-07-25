@@ -1,15 +1,17 @@
 import { Role } from 'src/enums/role.enums';
+import { Member } from 'src/member/entities/member.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToOne,
 } from 'typeorm';
 
 @Entity()
 export class User {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: number;
 
   @Column()
@@ -42,11 +44,14 @@ export class User {
   @Column({
     type: 'enum',
     enum: Role,
-    default: Role.USER,
+    default: Role.MEMBER,
   })
   role: Role;
   @CreateDateColumn()
   createdAt: Date;
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @OneToOne(() => Member, (member) => member.user)
+  member?: Member;
 }
